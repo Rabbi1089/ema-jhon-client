@@ -12,8 +12,11 @@ import { key } from "localforage";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
-  const { count } = useLoaderData();
+ // const [cart, setCart] = useState([]);
+ const cart = useLoaderData()
+  //const { count } = useLoaderData();
+  const [count , setCount] = useState(0)
+  //const count = 76
   const [itemPerPage, setItemPerPAge] = useState(10);
   const [currentPage , setCurrentPage] = useState(0)
   const numberOfPages = Math.ceil(count / itemPerPage);
@@ -31,6 +34,15 @@ const Shop = () => {
       .then((data) => setProducts(data));
   }, [currentPage,itemPerPage ]);
 
+  useEffect(
+    () => {
+      fetch('http://localhost:5000/productCount')
+      .then(res=>res.json())
+      .then(data => setCount(data.count))
+    }, [])
+
+  //cart directly used from loader
+  /*
   useEffect(() => {
     const storedCart = getShoppingCart();
     const savedCart = [];
@@ -50,6 +62,7 @@ const Shop = () => {
     // step 5: set the cart
     setCart(savedCart);
   }, [products]);
+  */
 
   const handleAddToCart = (product) => {
     // cart.push(product); '
